@@ -1,0 +1,34 @@
+{% extends 'visits/base.html' %}
+{% from "pagination.html" import pagination %}
+
+{% block tab_content %}
+
+<h2>Журнал действий пользователей</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>№</th>
+            <th>Путь до страницы</th>
+            <th>пользователь</th>
+            <th>Дата</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for log in logs %}
+        <tr>
+            <td>{{loop.index}}</td>
+            <td>{{log.path}}</td>
+            <td>{% if log.login %}
+                {{log.login}}
+                {% else %}
+                Неаутентифицированный пользователь
+                {% endif %}</td>
+            <td>{{log.created_at}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{{pagination(page, page_count, request.endpoint)}}
+
+{% endblock %}

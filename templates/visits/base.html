@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Журнал посещений</h1>
+
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link {% if request.endpoint == 'visits.logs' %}active{% endif %}" aria-current="page"
+            href="{{ url_for('visits.logs') }}">Журнал посещений</a>
+    </li>
+    {% if current_user.is_admin() %}
+    <li class="nav-item">
+        <a class="nav-link {% if request.endpoint == 'visits.stat' %}active{% endif %}"
+            href="{{ url_for('visits.stat') }}">Статистика по страницам</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% if request.endpoint == 'visits.stat_users' %}active{% endif %}"
+            href="{{ url_for('visits.stat_users') }}">Статистика по пользователям</a>
+    </li>
+    {% endif %}
+</ul>
+
+{% block tab_content %}
+{% endblock %}
+{% endblock %}

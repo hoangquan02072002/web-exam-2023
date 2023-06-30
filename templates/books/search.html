@@ -1,0 +1,115 @@
+
+{% extends 'base.html' %}
+{% from 'pagination.html' import pagination %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+
+<h1>Book Search</h1>
+<form method="POST" action="{{ url_for('books.search') }}">
+    <input type="text" name="title" placeholder="Title">
+    <input type="text" name="year" placeholder="Year" >
+    <input type="text" name="page_count" placeholder="Page Count" >
+    <input type="text" name="author" placeholder="Author">
+    <label for="genre">Genre:</label>
+        <select id="genre" name="genre">
+            <option value="">All</option>
+            {% for genre in genres %}
+                <option value="{{ genre.id }}">{{ genre.name }}</option>
+            {% endfor %}
+        </select><br>
+    <input type="submit" value="Submit">
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                №
+            </th>
+            <th>
+                Cover
+            </th>
+            <th>
+                ФИО
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Year
+            </th>
+            <th>
+                Publisher
+            </th>
+            <th>
+                Author
+            </th>
+            <th>
+                Page_count
+            </th>
+            <th>
+                Genres
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for result in results %}
+        <tr>
+            <td>
+                {{loop.index}}
+            </td>
+            <td>
+                <img class="card-img-top" src="{{ url_for('static', filename = 'img2/' + result['filename']) }}" alt="Card image cap" style = "height:200px">
+            </td>
+            <td id="Title">
+                {{ result['title'] }}
+            </td>
+
+            <td>
+                {{ result['description'] }}
+            </td>
+            <td>
+                {{ result['year'] }}
+            </td>
+            <td>
+                {{ result['publisher'] }}
+            </td>
+            <td>
+                {{ result['author'] }}
+            </td>
+            <td>
+                {{ result['page_count'] }}
+            </td>
+            <td>
+                {% for genre in genres %}
+                {% for bg in bgs %}
+                {% if result['id'] | string== bg.book_id | string and bg.genre_id | string== genre.id | string %} {{ genre.name }} <br> {% endif %}
+                {% endfor %}
+                {% endfor %}
+            </td>
+            <td>
+                <div class="btn-group" role="group">
+                    {% if current_user.is_authenticated %} 
+                        {% if current_user.can("show", user) %}
+                            <a class="btn btn-secondary" href="{{ url_for('books.show_book', book_id=result['id'] )}}">Просмотр</a>
+                        {% endif %}
+                        {% if current_user.can("edit", user) %}
+                            <a class="btn btn-primary" href="{{ url_for('books.edit_book', book_id=result['id'] )}}">Редактировать</a>
+                        {% endif %}
+                        {% if current_user.can("delete", user) %}
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal"
+                                    data-url="{{ url_for('books.delete_book', book_id = result['id'] )}}"
+                                    data-title="{{ result.title }}">Удалить</button>
+                        {% endif %}
+                    {% endif %}  
+            </td>
+        <tr/>
+        {% endfor %}
+    </tbody>
+</table>
+
+  <script src="{{ url_for('static', filename='delete.js')}}"></script>
+{% endblock %}

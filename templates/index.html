@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if current_user.is_authenticated %}
+    Hello {{ current_user.login }}!
+{% else %}
+    Не авторизированный пользователь
+{% endif %}
+{% endblock %}

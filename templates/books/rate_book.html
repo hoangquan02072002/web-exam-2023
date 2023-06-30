@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Rate {{ book.title }}</h1>
+  <form action="{{ url_for('books.submit_rating', book_id=book.id) }}" method="POST">
+    <div class="rating">
+      <input id="star5" type="radio" name="rating" value="5" checked>
+      <label for="star5" title="5 stars">5 – отлично</label>
+      <input id="star4" type="radio" name="rating" value="4">
+      <label for="star4" title="4 stars">4 – хорошо</label>
+      <input id="star3" type="radio" name="rating" value="3">
+      <label for="star3" title="3 stars">3 – удовлетворительно</label>
+      <input id="star2" type="radio" name="rating" value="2">
+      <label for="star2" title="2 stars">2 – неудовлетворительно</label>
+      <input id="star1" type="radio" name="rating" value="1">
+      <label for="star1" title="1 star">1 – плохо</label>
+      <input id="star0" type="radio" name="rating" value="0">
+      <label for="star0" title="0 star">0 – ужасно</label>
+    </div>
+    <textarea name="review" placeholder="Write your review..."></textarea>
+    <button type="submit">Submit</button>
+  </form>
+{% endblock %}

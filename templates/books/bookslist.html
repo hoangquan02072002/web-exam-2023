@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% from 'pagination.html' import pagination %}
+{% block head %}
+{{ super() }}
+<script defer src="{{ url_for('static', filename='delete.js')}}"></script>
+{% endblock %}
+
+{% block content %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                №
+            </th>
+            <th>
+                Cover
+            </th>
+            <th>
+                ФИО
+            </th>
+            <th>
+                Rate
+            </th>
+            <th>
+                Author
+            </th>
+            <th>
+                Page_count
+            </th>
+            <th>
+                Genres
+            </th>
+            <th>
+                More
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in books_list %}
+        <tr>
+            <td>
+                {{loop.index}}
+            </td>
+            <td>
+                <img class="card-img-top" src="{{ url_for('static', filename = 'img2/' + book.filename  ) }}" alt="Card image cap" style = "height:200px">
+            </td>
+            <td id="Title">
+                {{ book.title }}
+            </td>
+
+            <td>
+                {{ book.avg_rating or "There are no reviews yet"}}
+            </td>
+            <td>
+                {{ book.author }}
+            </td>
+            <td>
+                {{ book.page_count }}
+            </td>
+            <td>
+                {% for genre in genres %}
+                {% for bg in bgs %}
+                {% if book.id | string== bg.book_id | string and bg.genre_id | string== genre.id | string %} {{ genre.name }} <br> {% endif %}
+                {% endfor %}
+                {% endfor %}
+            </td>
+            <td>
+                {% if current_user.is_authenticated %} 
+                    {% if current_user.can("show", user) %}
+                        <a class="btn btn-secondary" href="{{ url_for('books.show_book', book_id=book.id)}}">Show</a>
+                    {% endif %}
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{{ pagination(current_page, last_page, request.endpoint) }}
+
+{% endblock %}

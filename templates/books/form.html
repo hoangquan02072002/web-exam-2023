@@ -1,0 +1,65 @@
+{% macro book_form(genres ,bgs, url, current_user, book={}) %}
+<form method="post" id="bookForm" enctype="multipart/form-data" action="{{ url }}">
+  <div class="">                
+      <div class="">     
+          {% if request.endpoint == "books.edit_book" or request.endpoint == "books.update_book" %}                
+          <div class="form-group ">							
+          Book id : {{book.id}}                               
+          </div>
+          {% endif %}                    
+          <div class="form-group ">							
+              <label for="title" class="control-label">Book title</label>							
+              <input type="text" name="title" id="title" autocomplete="off" class="form-control" placeholder="book name" value="{{book.title or ''}}"/>                                       
+          </div>
+          <div class="form-group">							
+              <label for="description" class="control-label">Description</label>							
+              <input type="text" name="description" id="description" autocomplete="off" class="form-control" placeholder="description" value="{{book.description or ''}}"/>                                        
+          </div>                    
+          <div class="form-group">							
+              <label for="year" class="control-label">Year</label>			
+              <input type="number" name="year" id="year" autocomplete="off" class="form-control" placeholder="year" value="{{book.year or ''}}"/>
+          </div>
+          <div class="form-group">							
+              <label for="publisher" class="control-label">Publisher</label>			
+              <input type="text" name="publisher" id="publisher" autocomplete="off" class="form-control" placeholder="publisher" value="{{book.publisher or ''}}"/>
+          </div>
+          <div class="form-group">							
+              <label for="author" class="control-label">Author</label>			
+              <input type="text" name="author" id="author" autocomplete="off" class="form-control" placeholder="author" value="{{book.author or ''}}"/>
+          </div>
+          <div class="form-group">							
+              <label for="page_count" class="control-label">Page</label>			
+              <input type="number" name="page_count" id="page_count" autocomplete="off" class="form-control" placeholder="page_count" value="{{book.page_count or ''}}"/>
+          </div>
+          <div class="form-group">							
+              Genres
+          </div>
+          <select class="form-select" aria-label="Default select example" name="genre_id" multiple>
+              <option value="">Не выбрано</option>
+              {% for genre in genres %}
+              <option 
+              {% for bg in bgs %}
+              {% if book.id | string== bg.book_id | string and bg.genre_id | string== genre.id | string %} selected {% endif %}
+              {% endfor %}
+              value="{{ genre.id }}">{{ genre.name }}</option>
+              {% endfor %}
+          </select>
+          {% if request.endpoint == "books.new_book" or request.endpoint == "books.create_book" %}
+            <div class="mb-3">
+            <label for="photo">Фоновое изображение</label>
+            <input class="form-control" type="file" name="photo" id="photo">
+            </div>
+            <div class="mb-3 background-preview p-3 rounded d-flex align-items-center justify-content-center">
+                <img src="#" class="img-fluid d-none" alt="">
+                <label for="photo" class="btn btn-dark">Выбрать изображение</label>
+            </div>
+          {% endif %}
+       
+                          
+      </div>
+      <div class="">
+          <input  type="submit" name="save" id="save" class="btn btn-info mt-4" value="Save" />                    
+      </div>
+  </div>
+</form>
+{% endmacro %}

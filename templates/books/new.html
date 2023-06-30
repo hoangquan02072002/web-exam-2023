@@ -1,0 +1,13 @@
+{% include 'base.html' %}
+{% from "books/form.html" import book_form %}
+{% block content %}
+  <div class="container-fluid" id="main">	
+   <div class="row row-offcanvas row-offcanvas-left">   
+      <div class="col-md-9 col-lg-10 main"> 
+		<h3>Add a Book</h3>
+		<br>
+        {{book_form(genres ,bgs , url_for('books.create_book'), current_user,book or {})}}
+       </div>       
+      </div>     
+    </div>
+{% endblock %}

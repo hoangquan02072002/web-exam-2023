@@ -1,0 +1,16 @@
+
+{% macro pagination(page, page_count, endpoint) %}
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item {% if page == 1 %} disabled {% endif %}"><a class="page-link" href="{{ url_for(endpoint, page=page-1) }}">Previous</a></li>
+      {%set start = 1 if page <= 3 else page - 3%}
+      {%set end = page_count if page + 3 > page_count else page + 3%}
+
+      {% for i in range(start, end + 1) %}
+      <li class="page-item {% if i == page %} active {% endif %}"><a class="page-link" href="{{ url_for(endpoint, page=i) }}">{{i}}</a></li>
+      {% endfor%}
+      
+      <li class="page-item {% if page == page_count %} disabled {% endif %}"><a class="page-link" href="{{ url_for(endpoint, page=page+1) }}">Next</a></li>
+    </ul>
+</nav>
+{% endmacro %}

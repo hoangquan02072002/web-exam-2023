@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Просмотр пользователя</h1>
+<table class="table">
+    <tbody>
+        <tr>
+            <td>ID</td>
+            <td>{{user.id}}</td>
+        </tr>
+        <tr>
+            <td>Логин</td>
+            <td>{{user.login}}</td>
+        </tr>
+        <tr>
+            <td>Имя</td>
+            <td>{{user.first_name}}</td>
+        </tr>
+        <tr>
+            <td>Фамилия</td>
+            <td>{{user.last_name}}</td>
+        </tr>
+        <tr>
+            <td>Отчество</td>
+            <td>
+                {% if user.middle_name %}
+                {{ user.middle_name }}
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>Роль</td>
+            <td>
+                {% if user.role_id %}
+                {{user.role_id}}
+                {% else %} 
+                Роль не назначена
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>Дата регистрации</td>
+            <td>{{user.created_at}}</td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <main>
+      <h1 class="ms-5 text-center">{{ book.title }}</h1>
+        <div class="ms-5 text-center">
+            <h2>Author : {{ book.author }}</h2> 
+        </div>
+        <div class="ms-5 text-center">
+            <h2>Description : {{ book.description }}</h2> 
+        </div>
+        <div class="ms-5 text-center">
+            <h2>Year : {{ book.year }}</h2> 
+        </div>
+        <div class="ms-5 text-center">
+            <h2>Publisher : {{ book.publisher }}</h2> 
+        </div>
+      <div class="text-center">
+        <img
+          class="w-50"
+          src="{{ url_for('static', filename = 'img2/' + book.filename  )}}"
+          alt="Card image cap"
+        />
+      </div>
+      {% if check %}
+        You already rate it !!!
+        <div class="ms-5">
+          Your rate : {{ check.rating }}
+        </div>
+        <div class="ms-5">
+            Your messenger : {{ check.text }}
+        </div>
+        <div class="ms-5">
+            Rated at : {{ check.created_at }}
+        </div>
+      {% else %}
+        <a class="btn btn-secondary" href="{{ url_for('books.rate_book', book_id=book.id)}}">Rate</a>
+      {% endif %}
+      <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        №
+                    </th>
+                    <th>
+                        User
+                    </th>
+                    <th>
+                        Raiting
+                    </th>
+                    <th>
+                        Text
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for lr in login_rate %}
+                <tr>
+                    <td>
+                        {{loop.index}}
+                    </td>
+                    <td>
+                        {{ lr.login }}
+                    </td>
+                    <td>
+                        {{ lr.rating }}
+                    </td>
+
+                    <td>
+                        {{ lr.text }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+{% endblock %}
